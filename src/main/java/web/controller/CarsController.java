@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.model.Car;
-import web.service.RemoveCarService;
+import web.service.CarServiceImp;
 
 import java.util.List;
 
@@ -46,18 +46,20 @@ public class CarsController {
 @Controller
 public class CarsController {
 
-    private final RemoveCarService carService;
+    private final CarServiceImp carServiceImp;
 
-    public CarsController(RemoveCarService carService) {
-        this.carService = carService;
+    public CarsController(CarServiceImp carServiceImp) {
+        this.carServiceImp = carServiceImp;
     }
 
     @GetMapping("/cars")
     public String getCars(@RequestParam(name = "count", required = false) Integer countCars, Model model) {
-        List<Car> cars = carService.getAllCars();
+        List<Car> cars = carServiceImp.getAllCars();
         int maxCount = cars.size();
         if (countCars == null || countCars > maxCount) {
             countCars = maxCount;
+        } else if (countCars < 0) {
+            countCars = 0;
         }
 
         model.addAttribute("cars", cars.subList(0, countCars));
