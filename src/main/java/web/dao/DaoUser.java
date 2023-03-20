@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DaoUser {
     List<User> getAllUsers();
+    void addNewUser(User user);
 }

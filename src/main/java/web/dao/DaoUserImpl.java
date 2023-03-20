@@ -22,4 +22,9 @@ public class DaoUserImpl implements DaoUser {
         query.from(User.class);
         return entityManager.createQuery(query).getResultList();
     }
+
+    @Override
+    public void addNewUser(User user) {
+        entityManager.persist(user);
+    }
 }

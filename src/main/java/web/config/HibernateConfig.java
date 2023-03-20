@@ -12,13 +12,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.Properties;
 
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(value = "web")
-public class DbConfig {
+public class HibernateConfig {
 
     @Bean
     public DataSource getDateSource() {
@@ -37,16 +38,19 @@ public class DbConfig {
         managerFactoryBean.setDataSource(getDateSource());
         managerFactoryBean.setPackagesToScan("web.model");
 
+        managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        managerFactoryBean.setJpaProperties(getProperties());
+
+        return managerFactoryBean;
+    }
+
+    private static Properties getProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         hibernateProperties.put("hibernate.show_sql", "true");
         hibernateProperties.put("hibernate.format_sql", "true");
         hibernateProperties.put("hibernate.hbm2ddl.auto", "validate");
-
-        managerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        managerFactoryBean.setJpaProperties(hibernateProperties);
-
-        return managerFactoryBean;
+        return hibernateProperties;
     }
 
     @Bean
@@ -58,6 +62,6 @@ public class DbConfig {
 
     @Bean
     public EntityManager entityManager() {
-        return entityManagerFactoryBean().getObject().createEntityManager();
+        return Objects.requireNonNull(entityManagerFactoryBean().getObject()).createEntityManager();
     }
 }
