@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
@@ -31,14 +28,32 @@ public class IndexController {
     public String addNewUser(Model model) {
         User user = new User();
 
-        model.addAttribute("new_user", user);
-        return "new-user";
+        model.addAttribute("edit_user", user);
+        return "edit-user";
     }
 
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("new_user") User user){
-        userService.addNewUser(user);
+    public String saveUser(@ModelAttribute("edit_user") User user) {
+        if (user.getId() != 0) {
+            userService.updateUser(user);
+        } else {
+            userService.addNewUser(user);
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/updateInfo")
+    public String updateUser(@RequestParam("empId") long id, Model model) {
+        model.addAttribute("edit_user", userService.getUserForId(id));
+        return "edit-user";
+    }
+
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("empId") long id){
+
+        userService.deleteUser(id);
+
         return "redirect:/";
     }
 

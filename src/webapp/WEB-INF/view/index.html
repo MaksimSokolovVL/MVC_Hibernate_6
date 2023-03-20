@@ -3,33 +3,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <title></title>
 </head>
 <body>
+<h1 class="top-h1">User accounting</h1>
+<div class="container">
+    <div class="table-container">
+        <table class="table-class" id="table-id" name="table-name">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>age</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, index  : ${users}">
 
-<div class="div-table">
-    <table class="table-class" id="table-id" name="table-name">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>age</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, index  : ${users}">
-            <td th:text="${user.getId()}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.surname}"></td>
-            <td th:text="${user.age}"></td>
-        </tr>
-        </tbody>
-    </table>
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.surname}"></td>
+                <td th:text="${user.age}"></td>
+
+                <form th:action="@{/updateInfo(empId=${user.id})}" method="post">
+                    <td>
+                        <button type="submit">Update</button>
+                    </td>
+                </form>
+                <form th:action="@{/deleteUser(empId=${user.id})}" method="post">
+                    <td>
+                        <button type="submit">Delete</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="button-container">
+        <img class="img_gif"  src="../static/img/edit1.gif" alt="#">
+        <button type="submit" onclick="window.location.href = 'addNewUser'">Add User</button>
+    </div>
 </div>
-<br>
 
-<button type="submit" onclick="window.location.href = 'addNewUser'">Add User</button>
+
 <!--<button type="button" onclick="openNewUserForm()">Add User</button>-->
 
 <!--<script>-->
