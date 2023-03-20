@@ -43,6 +43,4 @@ public class DaoUserImpl implements DaoUser {
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
     }
-
-
 }

@@ -50,10 +50,8 @@ public class IndexController {
     }
 
     @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam("empId") long id){
-
+    public String deleteUser(@RequestParam("empId") long id) {
         userService.deleteUser(id);
-
         return "redirect:/";
     }
 
