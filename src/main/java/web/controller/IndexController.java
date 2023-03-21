@@ -18,7 +18,6 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping(value = "/")
     public String allUsers(ModelMap model) {
         List<User> users = userService.getAllUsers();
